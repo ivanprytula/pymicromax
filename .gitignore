@@ -9,7 +9,11 @@ wheels/
 # Virtual environments
 .venv
 
+# Environment variables
 .env
 
 # Documentation build by MkDocs
 site/
+
+# Tools caches
+.ruff_cache/
