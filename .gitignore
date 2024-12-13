@@ -10,3 +10,6 @@ wheels/
 .venv
 
 .env
+
+# Documentation build by MkDocs
+site/
