@@ -51,6 +51,7 @@ dependencies = [
     { name = "pydantic", extra = ["email"] },
     { name = "pydantic-settings" },
     { name = "pyjwt" },
+    { name = "python-multipart" },
     { name = "sqlmodel" },
     { name = "tenacity" },
 ]
@@ -72,6 +73,7 @@ requires-dist = [
     { name = "pydantic", extras = ["email"], specifier = ">=2.10.3" },
     { name = "pydantic-settings", specifier = ">=2.2.1,<3.0.0" },
     { name = "pyjwt", specifier = ">=2.10.1" },
+    { name = "python-multipart", specifier = ">=0.0.7,<1.0.0" },
     { name = "sqlmodel", specifier = ">=0.0.22,<1.0.0" },
     { name = "tenacity", specifier = ">=9.0.0" },
 ]

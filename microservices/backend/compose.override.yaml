@@ -36,7 +36,7 @@ services:
       - ./backend/htmlcov:/app/htmlcov
     environment:
       SMTP_HOST: "localhost"
-      SMTP_PORT: "9025"
+      SMTP_PORT: "1025"
       SMTP_TLS: "false"
       EMAILS_FROM_EMAIL: "noreply@example.com"
 
