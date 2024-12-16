@@ -9,18 +9,19 @@ Starting with Python frameworks and tools. Future - add more frameworks and tool
 project-root/
 │
 ├── microservices/
-│   ├── gateway/        # FastAPI-based API gateway
+│   ├── backend/            # FastAPI-based public/private APIs
 │   ├── admin_panel/    # Django-based admin panel
-│   ├── api/            # FastAPI-based public/private APIs
-│   ├── etl/            # Flask-based data pipelines
-│   ├── dashboard/      # Streamlit-based dashboard/visualization
+│   ├── data_pipelines/            # Flask-based data pipelines
+│   ├── data_visualizations/      # Streamlit-based dashboard/visualization
 │
 ├── shared/
 │   ├── auth/       # Shared Python libraries (e.g., authentication)
-│   ├── libs/       # Shared Python libraries (e.g., logging)
+│   ├── libs/       # Shared Python libraries (e.g., logging, error_handling)
 │   ├── contracts/  # API contracts (e.g., OpenAPI specs)
 │   ├── models/     # Shared Pydantic/Django models or schema definitions
 │   ├── utils/      # Shared Python libraries (e.g., utilities)
+|   |── data_processing/           # Shared data processing logic (ETL transformations)
+│   ├── message_broker/            # Kafka/RabbitMQ message producers and consumers
 │
 ├── infra/
 │   ├── docker/     # Dockerfiles for services
@@ -125,3 +126,44 @@ The key is to maintain a single repository's branching model where the overall c
 5. Directory-Specific Considerations:
    1. Shared libraries (e.g., `shared/auth`): If changes in these shared components affect multiple microservices, feature branches related to these can also exist, such as `feature/shared-auth`.
    2. Terraform: Infrastructure changes can follow the same process, such as `feature/terraform-update`. This allows you to deploy infrastructure changes in parallel with service features.
+
+### Shell commands heap
+
+TODO: sort later
+
+### Development
+
+```shell
+# Enter needed microservice directory
+docker compose up --build
+
+
+# option 1: automatically grabs compose.yaml and compose.override.yaml files
+docker compose watch
+
+# option 2: implicit set
+docker compose -f compose.yaml -f compose.admin.yaml run backup_db
+
+
+```
+
+Generate Secret Keys
+
+```shell
+python -c "import secrets; print(secrets.token_urlsafe(32))"
+export POSTGRES_PASSWORD=$(echo "pymicromax-password" | openssl passwd -6 -stdin)
+```
+
+#### Init DB scripts
+
+Behavior Explanation:
+
+- Volume `app-db-data`: This stores the database data persistently. If this volume already exists, initialization scripts won't run again unless the volume is deleted.
+- Initialization Scripts: Any `.sql` or `.sh` script in /docker-entrypoint-initdb.d will execute only during the first startup of the container (if the data directory is empty).
+- Check for Database: The SQL script ensures the database is created only if it doesn't already exist.
+
+```shell
+docker compose down
+docker volume rm <project_name>_app-db-data
+docker compose up
+```

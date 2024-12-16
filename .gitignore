@@ -17,3 +17,8 @@ site/
 
 # Tools caches
 .ruff_cache/
+.pytest_cache/
+
+.vscode/
+
+sandbox/

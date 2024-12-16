@@ -12,9 +12,14 @@ dependencies = [
 [dependency-groups]
 dev = [
     "icecream>=2.1.3",
+    "mypy>=1.13.0",
     "pre-commit>=4.0.1",
     "ruff>=0.8.3",
 ]
+
+[tool.mypy]
+strict = true
+exclude = ["venv", ".venv", "alembic"]
 
 # add config for Ruff to sort imports
 [tool.ruff]
@@ -26,6 +31,7 @@ extend-safe-fixes = ["E402", ]
 
 [tool.lint.per-file-ignores]
 "__init__.py" = ["E402"]
+"microservices/backend/app/alembic/versions/*" = ["F401"]
 
 [tool.lint.isort]
 force-sort-within-sections = true

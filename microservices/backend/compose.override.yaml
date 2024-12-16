@@ -1,0 +1,63 @@
+services:
+
+  db:
+    restart: "no"
+    ports:
+      - "5432:5432"
+
+  adminer:
+    restart: "no"
+    ports:
+      - "8080:8080"
+
+  backend:
+    restart: "no"
+    ports:
+      - "8000:8000"
+    build:
+      context: .
+    # command: sleep infinity  # Infinite loop to keep container alive doing nothing
+    command:
+      - fastapi
+      - run
+      - --reload
+      - "app/main.py"
+    develop:
+      watch:
+        - path: .
+          action: sync
+          target: /app
+          ignore:
+            - .venv
+        - path: ./pyproject.toml
+          action: rebuild
+    # TODO: remove once coverage is done locally
+    volumes:
+      - ./backend/htmlcov:/app/htmlcov
+    environment:
+      SMTP_HOST: "localhost"
+      SMTP_PORT: "9025"
+      SMTP_TLS: "false"
+      EMAILS_FROM_EMAIL: "noreply@example.com"
+
+  mailcatcher:
+    image: schickling/mailcatcher
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
+  # mailtrap:  # https://mailtrap.io/blog/docker-send-email/#DBCK
+  #   image: dbck/mailtrap:latest
+  #   ports:
+  #     - "0.0.0.0:9080:9080"
+  #     - "0.0.0.0:9025:9025"
+  #   volumes:
+  #     - maildata:/var/mail
+  #   environment:
+  #     - TZ=Europe/Warsaw
+  #     - MAILTRAP_USER=username
+  #     - MAILTRAP_PASSWORD=password
+
+
+volumes:
+  maildata:
