@@ -20,6 +20,11 @@ class PrivateUserCreate(BaseModel):
     is_verified: bool = False
 
 
+@router.get("/")
+def read_root():
+    return {"message": "Hello from FastAPI"}
+
+
 @router.post("/users/", response_model=UserPublic)
 def create_user(user_in: PrivateUserCreate, session: SessionDep) -> Any:
     """
