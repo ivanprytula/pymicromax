@@ -5,7 +5,7 @@ from typing import Annotated, Any, Literal, Self
 from pydantic import (
     AnyUrl,
     BeforeValidator,
-    # HttpUrl,
+    HttpUrl,
     PostgresDsn,
     computed_field,
     model_validator,
@@ -44,7 +44,8 @@ class Settings(BaseSettings):
         return [str(origin).rstrip("/") for origin in self.BACKEND_CORS_ORIGINS] + [self.FRONTEND_HOST]
 
     PROJECT_NAME: str
-    # SENTRY_DSN: HttpUrl | None = None
+    HIGHLIGHTIO_PROJECT_ID: str
+    SENTRY_DSN: HttpUrl | None = None
     POSTGRES_SERVER: str
     POSTGRES_PORT: int = 5432
     POSTGRES_USER: str

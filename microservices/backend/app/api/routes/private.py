@@ -1,6 +1,6 @@
 from typing import Any
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 from pydantic import BaseModel
 
 from app.api.deps import SessionDep
@@ -23,6 +23,16 @@ class PrivateUserCreate(BaseModel):
 @router.get("/")
 def read_root():
     return {"message": "Hello from FastAPI"}
+
+
+@router.get("/highlight-io-check/")
+async def root(request: Request):
+    return {"message": f"This might not be a great idea {5 / 0}"}
+
+
+@router.get("/sentry-debug/")
+async def trigger_error():
+    division_by_zero = 1 / 0  # noqa: F841
 
 
 @router.post("/users/", response_model=UserPublic)
